@@ -1,6 +1,8 @@
 import os
 from invoke import task
+from dotenv import load_dotenv
 
+load_dotenv()
 
 @task
 def dev(ctx):
