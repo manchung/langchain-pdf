@@ -47,9 +47,16 @@ def create_message(conversation):
     if not chat:
         return "Chat not yet implemented!"
     print(f'MANCH  input: {input}')
+
+    def to_bytes(gen):
+        for chunk in gen:                         # chunk is a dict
+            text = chunk["answer"]                # pick the field you care about
+            yield f"{text}\n\n".encode("utf-8")
+
+    
     if streaming:
         return Response(
-            stream_with_context(chat.stream(input)), mimetype="text/event-stream"
+            stream_with_context(to_bytes(chat.stream(input))), mimetype="text/event-stream"
         )
     else:
         output = chat.run(input)
